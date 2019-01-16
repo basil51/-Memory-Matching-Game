@@ -1,14 +1,28 @@
 /*
  * Create a list that holds all of your cards
- */
-
-
-/*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+function init() {
+	let cardslist=[];
+	axios.get('files/fa.txt').then(response => {
+		const fa=response.data.split(",");
+		for (let i=0;i<16;i+=2){
+			const node = document.createElement("LI");    // Create a <li> node
+			node.className ="card miss";
+			const inode = document.createElement("I");         // Create a text node
+			inode.className="fa "+fa[Math.floor(Math.random()*49)+49*i]
+			node.appendChild(inode); 	// Append the text to <li>
+			cardslist[i]=node;
+			cardslist[i+1]=node.cloneNode(true);
+		}
+		cardslist = shuffle(cardslist);
+		for (let i=0;i<16;i++) document.getElementById("deck").appendChild(cardslist[i]);
+	});
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
