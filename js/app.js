@@ -47,6 +47,18 @@ function timing() {
 	if (!playerwin) setTimeout(timing, 1000);
 }
 
+function stars1(){
+	const sta=document.getElementById("stars");sta.innerHTML='';
+	new Audio('files/down.mp3').play();
+	if (stars>1) stars--;
+	for (let i=0;i<stars;i++){
+		const node = document.createElement("LI");    // Create a <li> node
+		const inode = document.createElement("I");         // Create a text node
+		inode.className="fa fa-star"
+		node.appendChild(inode); 	// Append the text to <li>
+		sta.appendChild(node)
+	}
+}
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
