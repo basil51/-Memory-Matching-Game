@@ -1,13 +1,16 @@
+let playerwin = false, stars=4;
+
 /*
  * Create a list that holds all of your cards
  */
 
-let playerwin = false, stars=4;
-
 function init() {
 	let cardslist=[];
+	// read font awesome symbols
 	axios.get('files/fa.txt').then(response => {
+		//splet fonts by comma
 		const fa=response.data.split(",");
+		//create 16 card with 8 random symbols
 		for (let i=0;i<16;i+=2){
 			const node = document.createElement("LI");    // Create a <li> node
 			node.className ="card miss";
@@ -17,7 +20,9 @@ function init() {
 			cardslist[i]=node;
 			cardslist[i+1]=node.cloneNode(true);
 		}
+		// shuffle the cards randomle
 		cardslist = shuffle(cardslist);
+		// add the cards to the main deck
 		for (let i=0;i<16;i++) document.getElementById("deck").appendChild(cardslist[i]);
 	});
 }
@@ -36,6 +41,7 @@ function shuffle(array) {
     return array;
 }
 
+// timing function with its variables
 const h1 = document.getElementById('time'); let seconds = 0, minutes = 0, hours = 0;
 function timing() {
     seconds++;
@@ -44,6 +50,7 @@ function timing() {
 	if (!playerwin) setTimeout(timing, 1000);
 }
 
+// wining the game function
 function wingame() {
 	new Audio('files/win.mp3').play();
 	setTimeout(function(){
@@ -54,19 +61,22 @@ function wingame() {
 	}, 1000);
 }
 
+//display stars function
 function stars1(){
 	const sta=document.getElementById("stars");sta.innerHTML='';
-	new Audio('files/down.mp3').play();
-	if (stars>1) stars--;
-	for (let i=0;i<stars;i++){
-		const node = document.createElement("LI");    // Create a <li> node
-		const inode = document.createElement("I");         // Create a text node
-		inode.className="fa fa-star"
-		node.appendChild(inode); 	// Append the text to <li>
-		sta.appendChild(node)
+	if (stars>1) {
+		stars--; new Audio('files/down.mp3').play();
+		for (let i=0;i<stars;i++){
+			const node = document.createElement("LI");    // Create a <li> node
+			const inode = document.createElement("I");         // Create a text node
+			inode.className="fa fa-star"
+			node.appendChild(inode); 	// Append the text to <li>
+			sta.appendChild(node)
+		}
 	}
 }
 
+//main function add event listner for clicking cards
 function game() {
 	let correct=0, card1=0, count=0;
 
@@ -103,6 +113,8 @@ function game() {
 	});
 }
 
+
+// call all functions
 stars1();
 timing();
 init();
