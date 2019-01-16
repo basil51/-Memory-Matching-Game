@@ -1,10 +1,8 @@
 /*
  * Create a list that holds all of your cards
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
  */
+
+let playerwin = false, stars=4;
 
 function init() {
 	let cardslist=[];
@@ -26,7 +24,7 @@ function init() {
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -35,7 +33,6 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
@@ -45,6 +42,16 @@ function timing() {
     if (seconds >= 60) { seconds = 0; minutes++; if (minutes >= 60) {minutes = 0; hours++; }}
     h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
 	if (!playerwin) setTimeout(timing, 1000);
+}
+
+function wingame() {
+	new Audio('files/win.mp3').play();
+	setTimeout(function(){
+		const y=confirm("Congratulation; you win the game.\nyou win in: "+h1.textContent+
+			"\nyour rating is: "+stars+"/3\nWould you like to play again ?");
+		if (y) location.reload();
+		else playerwin=true;
+	}, 1000);
 }
 
 function stars1(){
@@ -59,13 +66,44 @@ function stars1(){
 		sta.appendChild(node)
 	}
 }
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+
+function game() {
+	let correct=0, card1=0, count=0;
+
+	document.getElementById('restart').addEventListener('click', function (){location.reload(); });
+	document.getElementById('deck').addEventListener('click', function (evt) {
+		const card2=evt.target;
+		if (card2.className=="card miss"){
+			document.getElementById('moves').textContent=++count+' Moves';
+			if (count%17===0) stars1();
+			new Audio('files/click.mp3').play();
+			card2.className="card test";
+			if (!card1) card1=card2;
+			else {
+				if (card1.innerHTML==card2.innerHTML) {
+					correct++;
+					card1.className="card match";
+					card2.className="card match";
+					if (correct==8) wingame(3);
+					else new Audio('files/correct.mp3').play();
+				}
+				else {
+					card1.className="card not";
+					card2.className="card not";
+					new Audio('files/wrong.mp3').play();
+					setTimeout(function(){
+						tem=document.querySelectorAll(".not");
+						tem[1].className="card miss";
+						tem[0].className="card miss";
+					}, 1000);
+				}
+				card1=0;
+			}
+		}
+	});
+}
+
+stars1();
+timing();
+init();
+game();
