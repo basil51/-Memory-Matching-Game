@@ -28,18 +28,35 @@ body {
     flex-direction: column;
 }
 
-h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-}
+h1 { font: 300 'Open Sans', sans-serif; }
+
+i { pointer-events: none;}
 
 /*
  * Styles for the deck of cards
  */
 
+@media screen and (max-width: 800px) {
+   .deck {
+       width : 84vw;
+       height: 84vw;
+    }
+}
+
+@media screen and (min-width: 801px) {
+    .deck {
+        width : 42vw;
+        height: 42vw;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    h1 {
+        display: none;
+    }
+}
+
 .deck {
-    width: 660px;
-    min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
@@ -52,13 +69,11 @@ h1 {
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
+    height: 22.5%;
+    width: 22.5%;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
-    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +84,7 @@ h1 {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    font-size: 35px;
 }
 
 .deck .card.miss {
@@ -78,39 +94,121 @@ h1 {
     font-size: 35px;
 }
 
-.deck .card.show {
-    font-size: 33px;
+.deck .card.test {
+    cursor: default;
+    background: #8db154;
+    font-size: 35px;
 }
+
+@-webkit-keyframes not {
+    from,
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    10%,30%,50%,70%,90% {
+      -webkit-transform: translate3d(-10px, 0, 0);
+      transform: translate3d(-10px, 0, 0);
+    }
+    20%,40%,60%,80% {
+      -webkit-transform: translate3d(10px, 0, 0);
+      transform: translate3d(10px, 0, 0);
+    }
+  }
+
+@keyframes not {
+    from,
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    10%,30%,50%,70%,90% {
+      -webkit-transform: translate3d(-10px, 0, 0);
+      transform: translate3d(-10px, 0, 0);
+    }
+    20%,40%,60%,80% {
+      -webkit-transform: translate3d(10px, 0, 0);
+      transform: translate3d(10px, 0, 0);
+    }
+}
+
+.deck .card.not{
+    animation-duration: 1s;
+    background: #e43415;
+    font-size: 35px;
+    -webkit-animation-name: not;
+    animation-name: not;
+  }
+
+
+@-webkit-keyframes match {
+    20% {
+      -webkit-transform: scale3d(0.9, 0.9, 0.9);
+      transform: scale3d(0.9, 0.9, 0.9);
+    }
+    50%,55% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.1, 1.1, 1.1);
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+    to {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+}
+
+@keyframes match {
+    20% {
+      -webkit-transform: scale3d(0.9, 0.9, 0.9);
+      transform: scale3d(0.9, 0.9, 0.9);
+    }
+    50%,55% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.1, 1.1, 1.1);
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+    to {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+}
+
 
 .deck .card.match {
     cursor: default;
-    background: #02ccba;
-    font-size: 33px;
+    background: #7ce043;
+    font-size: 35px;
+    -webkit-animation-duration: 0.75s;
+    animation-duration: 0.75s;
+    -webkit-animation-name: match;
+    animation-name: match;
 }
-
 /*
  * Styles for the Score Panel
  */
 
-.score-panel {
-    text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
+.panel {
+    width: 42%;
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.score-panel .stars {
+.panel .stars {
     margin: 0;
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
 }
 
-.score-panel .stars li {
+.panel .stars li {
     list-style: none;
     display: inline-block;
 }
 
-.score-panel .restart {
-    float: right;
+.panel #restart {
     cursor: pointer;
 }
