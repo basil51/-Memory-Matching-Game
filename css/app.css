@@ -91,7 +91,6 @@ i { pointer-events: none;}
     cursor: default;
     background: #020cba;
     cursor: pointer;
-    font-size: 35px;
 }
 
 .deck .card.test {
